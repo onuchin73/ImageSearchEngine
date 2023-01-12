@@ -19,6 +19,16 @@
     <button type="submit">Search</button>
 </form>
 
+{% if user.is_authenticated %}
+<form action="{% url 'download' %}" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit">Search</button>
+</form>
+{% endif %}
+
+<p></p>
+
 {% if images %}
 <h4>Found Images</h4>
 
@@ -26,7 +36,5 @@
     <img style="width: 200px" src="{{ img }}">
 {% endfor %}
 {% endif %}
-
-
 </body>
 </html>

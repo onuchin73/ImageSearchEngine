@@ -1,9 +1,10 @@
-from asgiref.sync import sync_to_async
+from asgiref.sync import sync_to_async, async_to_sync
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.views import View
 
 from .forms import SearchForm
-from .services import search_image
+from .services import search_image, save_images
 
 
 class SearchImageView(View):
@@ -16,3 +17,14 @@ class SearchImageView(View):
         if form.is_valid():
             images = await search_image(form.cleaned_data['image_type'], form.cleaned_data['count'])
         return await sync_to_async(render)(request, 'search_img/index.html', {'form': SearchForm(), 'images': images})
+
+
+@login_required
+def search_save(request):
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
+        images = []
+        if form.is_valid():
+            images = async_to_sync(save_images)(
+                request.user.id, form.cleaned_data['image_type'], form.cleaned_data['count'])
+        return render(request, 'search_img/index.html', {'form': SearchForm(), 'images': images})

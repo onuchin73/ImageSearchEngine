@@ -4,5 +4,6 @@ from . import views
 
 
 urlpatterns = [
-    path('', views.SearchImageView.as_view())
+    path('download/', views.search_save, name='download'),
+    path('', views.SearchImageView.as_view()),
 ]
