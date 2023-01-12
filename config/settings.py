@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'search_img',
+    'account',
 ]
 
 MIDDLEWARE = [
@@ -108,3 +109,5 @@ API_KEY = 'live_G57KmXhKsONKjYedN1VBxVOOycnF6wwb6VKVKU71Ms1a66QswG8N7ckLXE28Tnca
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = '/'

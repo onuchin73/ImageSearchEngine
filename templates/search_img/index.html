@@ -5,17 +5,28 @@
     <title>Search</title>
 </head>
 <body>
+
+{% if not user.is_authenticated %}
+<a href="{% url 'login' %}">Login</a>
+<a href="{% url 'signup' %}">Signup</a>
+{% endif %}
+
+<p></p>
+
 <form method="post">
     {% csrf_token %}
     {{ form }}
     <button type="submit">Search</button>
 </form>
 
+{% if images %}
 <h4>Found Images</h4>
 
 {% for img in images %}
     <img style="width: 200px" src="{{ img }}">
 {% endfor %}
+{% endif %}
+
 
 </body>
 </html>
