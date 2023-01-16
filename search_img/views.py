@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.views import View
 
 from .forms import SearchForm
+from .models import Image
 from .services import search_image, save_images
 
 
@@ -28,3 +29,10 @@ def search_save(request):
             images = async_to_sync(save_images)(
                 request.user.id, form.cleaned_data['image_type'], form.cleaned_data['count'])
         return render(request, 'search_img/index.html', {'form': SearchForm(), 'images': images})
+
+
+class ListImageView(View):
+    async def get(self, request):
+        user = await sync_to_async(request.user.id)()
+        images = Image.objects.filter(user)
+        return await sync_to_async(render)(request, 'search_img/list_images.html', {'images': images})

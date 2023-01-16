@@ -3,6 +3,8 @@ import httpx
 import aiofiles
 
 from config import settings
+from config.settings import BASE_DIR
+from .models import Image
 
 
 async def get_link(image_type: str):
@@ -26,18 +28,19 @@ async def search_image(image_type: str, count: int):
     return images
 
 
-async def download_file(user_id: int, url: str):
+async def download_file(user_id: int, url: str, image_type: str):
     async with httpx.AsyncClient() as client:
         file_name = f'media/{user_id}/{url.split("/")[-1]}'
         res = await client.get(url)
         async with aiofiles.open(file_name, 'wb+') as f:
             await f.write(res.read())
+    await Image.objects.acreate(title=image_type, url=file_name, user_id=user_id)
 
 
 async def save_images(user_id: int, image_type: str, count: int):
     link_images = await search_image(image_type, count)
     await asyncio.gather(
-        *(download_file(user_id, url) for url in link_images),
+        *(download_file(user_id, url, image_type) for url in link_images),
         return_exceptions=True
     )
     return link_images

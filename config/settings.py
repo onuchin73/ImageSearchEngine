@@ -101,6 +101,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # thecatapi.com api key
 API_KEY = 'live_G57KmXhKsONKjYedN1VBxVOOycnF6wwb6VKVKU71Ms1a66QswG8N7ckLXE28Tnca'
